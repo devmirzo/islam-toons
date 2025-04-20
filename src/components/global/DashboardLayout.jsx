@@ -198,8 +198,13 @@ export default function DashboardLayout() {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h6" noWrap>
-            Islomiy Video & Audio Platforma
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate("/")}
+          >
+            Islomiy Media
           </Typography>
         </Toolbar>
       </AppBar>
