@@ -25,44 +25,67 @@ import {
   MenuBook as MenuBookIcon,
   AccountCircle as AccountCircleIcon,
 } from "@mui/icons-material";
+// import { supabase } from "../../supabaseClient"; // ← yangi import
+import { useEffect } from "react"; // ← useEffect ham kerak bo‘ladi
+
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom"; // 👈 Routerdan navigate olish
+import { supabase } from "../supabaseClient";
 
 const drawerWidth = 240;
 
 const allData = [
   {
     id: 1,
-    title: "Yusuf A.S",
+    title: "Allohning Habibi Muhammad 1-fasl",
     type: "multfilm",
-    img: "https://placekitten.com/200/300",
+    img: "../src/images/Allohning-Habibi-Muhammad-1.png",
   },
   {
     id: 2,
-    title: "Imon haqiqatlari",
-    type: "hujjatli",
-    img: "https://placekitten.com/201/300",
+    title: "Allohning Habibi Muhammad 2-fasl",
+    type: "multfilm",
+    img: "../src/images/Allohning-Habibi-Muhammad-2.png",
   },
   {
     id: 3,
-    title: "Odob haqida",
-    type: "audio",
-    img: "https://placekitten.com/202/300",
+    title: "Allohning Habibi Muhammad 3-fasl",
+    type: "multfilm",
+    img: "../src/images/Allohning-Habibi-Muhammad-3.png",
   },
   {
     id: 4,
-    title: "Soliha ayol",
-    type: "audio",
-    img: "https://placekitten.com/203/300",
+    title: "Qur'onda nomi kelgan jonzotlar",
+    type: "multfilm",
+    img: "../src/images/Qur'onda-nomi-kelgan-jonzotlar.png",
   },
   {
     id: 5,
-    title: "Payg‘ambarlar qissasi",
+    title: "Qur'onda kelgan ayollar qissasi",
     type: "multfilm",
-    img: "https://placekitten.com/204/300",
+    img: "../src/images/Qur'onda-kelgan-ayollar-qissasi.png",
   },
   {
     id: 6,
+    title: "Qur'onda zikri kelgan ajoyibotlar",
+    type: "multfilm",
+    img: "../src/images/Qur'onda-zikri-kelgan-ajoyibotlar.png",
+  },
+
+  {
+    id: 7,
+    title: "Qur'onda kelgan insonlar qissasi",
+    type: "multfilm",
+    img: "../src/images/Qur'onda-kelgan-insonlar-qissasi.png",
+  },
+  {
+    id: 8,
+    title: "Qur'onda kelgan oyat-belgilar haqida qissalar",
+    type: "multfilm",
+    img: "../src/images/Qur'onda-kelgan-oyat-belgilar-haqida-qissalar.png",
+  },
+  {
+    id: 9,
     title: "Musulmon olam tarixi",
     type: "hujjatli",
     img: "https://placekitten.com/205/300",
@@ -89,6 +112,25 @@ export default function DashboardLayout() {
     if (isMobile) setMobileOpen(false);
   };
 
+  const [allData, setAllData] = useState([]);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      const { data, error } = await supabase
+        .from("videos")
+        .select("*")
+        .order("title", { ascending: true }); // yoki istalgan tartib
+
+      if (error) {
+        console.error("Error fetching videos:", error.message);
+      } else {
+        setAllData(data);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
   const filteredData =
     selected === "all"
       ? allData
@@ -109,6 +151,7 @@ export default function DashboardLayout() {
         <List>
           <ListItem disablePadding>
             <ListItemButton
+            
               selected={selected === "multfilm"}
               onClick={() => handleSelect("multfilm")}
             >
@@ -260,15 +303,21 @@ export default function DashboardLayout() {
           }}
         >
           {filteredData.map((item) => (
-            <Card key={item.id}>
-              <CardMedia
+            <Card
+              key={item.id}
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(`/playlist/${item.id}`)} // 👈 MUHIM!
+            >
+              <CardMedia.AccountCircle
                 component="img"
-                height="140"
+                height="180"
                 image={item.img}
                 alt={item.title}
               />
               <CardContent>
-                <Typography variant="subtitle1">{item.title}</Typography>
+                <Typography variant="subtitle1">
+                  {item.playlist_name}
+                </Typography>
               </CardContent>
             </Card>
           ))}

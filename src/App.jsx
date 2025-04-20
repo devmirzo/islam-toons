@@ -1,8 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home, Login, NotPage, Register, User } from "./pages";
-import MainLayouts from "./layouts/MainLayout";
 import { DashboardLayout } from "./components";
+import PlaylistPage from "./pages/PlaylistPage";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -12,6 +12,7 @@ const App = () => {
       children: [
         { index: true, element: <DashboardLayout /> },
         { path: "/user", element: <User /> },
+        { path: "/playlist/:id", element: <PlaylistPage /> },
       ],
     },
     { path: "/Login", element: <Login /> },
